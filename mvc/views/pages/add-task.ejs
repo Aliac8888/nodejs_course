@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../includes/head.ejs") %>
+<body>
+    <%- include("../includes/header.ejs") %>
+    <main>
+        <form action='/tasks/add-task' method='POST'>
+            <input type='text' name='title'>
+            <button type='submit'>ADD TASK</button>
+        </form>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include("../includes/head.ejs") %>
+
+    <body>
+        <%- include("../includes/header.ejs") %>
+            <main>
+                <% if (tasks.length> 0) { %>
+                    <ul>
+                        <% tasks.forEach(task=> { %>
+                            <li>
+                                <%= task.title %>
+                            </li>
+                        <% }) %>
+                    </ul>
+                    <% } %>
+            </main>
+    </body>
+
+</html>
