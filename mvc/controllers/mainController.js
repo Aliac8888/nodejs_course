@@ -1,3 +1,3 @@
 exports.getHomePage = (req, res, next) => {
-  res.render("pages/main", { title: "HOME PAGE" });
+  res.render("pages/main", { title: "HOME PAGE", path:"/" });
 };

@@ -1,18 +1,21 @@
 const Task = require("../models/task");
 
-exports.getTasksPage = (req, res, next) => {
-  const tasks = Task.getAll();
-  res.render("pages/tasks", { title: "TASKS PAGE", tasks });
+exports.getTasksPage = async (req, res, next) => {
+  const tasks = await Task.getAll();
+  res.render("pages/tasks", { title: "TASKS PAGE", path: "/tasks", tasks });
 };
 
 exports.getAddTaskPage = (req, res, next) => {
-  res.render("pages/add-task", { title: "ADD TASK PAGE" });
+  res.render("pages/add-task", {
+    title: "ADD TASK PAGE",
+    path: "/tasks/add-task-page",
+  });
 };
 
 exports.postAddTask = async (req, res, next) => {
   const newTask = new Task(req.body.title);
   const result = await newTask.save();
   console.log(result);
-  
+
   res.redirect("/tasks");
 };

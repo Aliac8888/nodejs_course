@@ -39,6 +39,7 @@ nav ul li a {
 
 nav ul li a:hover {
     text-decoration: underline;
+    color: #08C2FF;
 }
 
 /* Page structure */
@@ -75,4 +76,8 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+.active{
+    color: #006BFF;
 }
