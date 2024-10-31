@@ -9,8 +9,10 @@ exports.getAddTaskPage = (req, res, next) => {
   res.render("pages/add-task", { title: "ADD TASK PAGE" });
 };
 
-exports.postAddTask = (req, res, next) => {
+exports.postAddTask = async (req, res, next) => {
   const newTask = new Task(req.body.title);
-  newTask.save();
+  const result = await newTask.save();
+  console.log(result);
+  
   res.redirect("/tasks");
 };
