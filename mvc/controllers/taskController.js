@@ -13,7 +13,7 @@ exports.getAddTaskPage = (req, res, next) => {
 };
 
 exports.postAddTask = async (req, res, next) => {
-  const newTask = new Task(req.body.title);
+  const newTask = new Task(req.body.title, req.body.description, req.body.imageUrl);
   const result = await newTask.save();
   console.log(result);
 

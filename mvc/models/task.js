@@ -15,8 +15,10 @@ const getAllTasks = async () => {
 };
 
 module.exports = class {
-  constructor(taskTitle) {
-    this.title = taskTitle;
+  constructor(title,description,imageUrl) {
+    this.title = title;
+    this.description = description;
+    this.imageUrl = imageUrl;
   }
 
   async save() {
