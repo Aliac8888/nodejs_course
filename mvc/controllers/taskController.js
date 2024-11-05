@@ -12,6 +12,17 @@ exports.getAddTaskPage = (req, res, next) => {
   });
 };
 
+exports.getEditTaskPage = async (req, res, next) => {
+  const taskId = req.params.taskId;
+  const task = await Task.findById(taskId);
+  
+  res.render("pages/edit-task", {
+    title: "EDIT TASK PAGE",
+    path: "",
+    task,
+  });
+};
+
 exports.postAddTask = async (req, res, next) => {
   const newTask = new Task(req.body.title, req.body.description, req.body.imageUrl);
   const result = await newTask.save();

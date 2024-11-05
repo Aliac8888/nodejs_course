@@ -15,7 +15,8 @@ const getAllTasks = async () => {
 };
 
 module.exports = class {
-  constructor(title,description,imageUrl) {
+  constructor(title, description, imageUrl) {
+    this.id = Math.ceil(Math.random() * 10000000).toString();
     this.title = title;
     this.description = description;
     this.imageUrl = imageUrl;
@@ -41,5 +42,11 @@ module.exports = class {
 
   static async getAll() {
     return await getAllTasks();
+  }
+
+  static async findById(id) {
+    const tasks = await getAllTasks();
+    const task = tasks.find((t) => t.id === id);
+    return task;
   }
 };
