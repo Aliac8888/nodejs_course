@@ -49,4 +49,14 @@ module.exports = class {
     const task = tasks.find((t) => t.id === id);
     return task;
   }
+
+  static async updateTask(id, title, description, imageUrl) {
+    const tasks = await getAllTasks();
+    const updatedTasks = tasks.filter(t => t.id !== id);
+    fs.writeFileSync(
+      filePath,
+      JSON.stringify([...updatedTasks, { id, title, description, imageUrl }])
+    );
+    return true;
+  }
 };

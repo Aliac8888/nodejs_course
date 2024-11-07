@@ -12,6 +12,16 @@ exports.getAddTaskPage = (req, res, next) => {
   });
 };
 
+exports.postAddTask = async (req, res, next) => {
+  const newTask = new Task(
+    req.body.title,
+    req.body.description,
+    req.body.imageUrl
+  );
+  const result = await newTask.save();
+  res.redirect("/tasks");
+};
+
 exports.getEditTaskPage = async (req, res, next) => {
   const taskId = req.params.taskId;
   const task = await Task.findById(taskId);
@@ -23,10 +33,17 @@ exports.getEditTaskPage = async (req, res, next) => {
   });
 };
 
-exports.postAddTask = async (req, res, next) => {
-  const newTask = new Task(req.body.title, req.body.description, req.body.imageUrl);
-  const result = await newTask.save();
-  console.log(result);
-
+exports.postEditTask = async (req, res, next) => {
+  const taskId = req.params.taskId;
+  const task = await Task.findById(taskId);
+  if (task) {
+    await Task.updateTask(
+      taskId,
+      req.body.title,
+      req.body.description,
+      req.body.imageUrl
+    );
+  }
+  
   res.redirect("/tasks");
 };
