@@ -25,7 +25,7 @@ exports.postAddTask = async (req, res, next) => {
 exports.getEditTaskPage = async (req, res, next) => {
   const taskId = req.params.taskId;
   const task = await Task.findById(taskId);
-  
+
   res.render("pages/edit-task", {
     title: "EDIT TASK PAGE",
     path: "",
@@ -44,6 +44,16 @@ exports.postEditTask = async (req, res, next) => {
       req.body.imageUrl
     );
   }
-  
+
+  res.redirect("/tasks");
+};
+
+exports.postDeleteTask = async (req, res, next) => {
+  const taskId = req.body.taskId;
+  const task = await Task.findById(taskId);
+  if (task) {
+    await Task.deleteTask(taskId);
+  }
+
   res.redirect("/tasks");
 };

@@ -59,4 +59,11 @@ module.exports = class {
     );
     return true;
   }
+
+  static async deleteTask(id) {
+    const tasks = await getAllTasks();
+    const updatedTasks = tasks.filter(t => t.id !== id);
+    fs.writeFileSync(filePath, JSON.stringify(updatedTasks));
+    return true;
+  }
 };
