@@ -65,6 +65,7 @@
 
 .edit-button {
     background-color: #3498db;
+    border: 2px solid black;
 }
 
 .edit-button:hover {
@@ -73,6 +74,7 @@
 
 .delete-button {
     background-color: #e74c3c;
+    border: 2px solid black;
 }
 
 .delete-button:hover {

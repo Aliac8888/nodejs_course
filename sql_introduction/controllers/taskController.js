@@ -1,8 +1,13 @@
 const Task = require("../models/task");
 
-exports.getTasksPage = async (req, res, next) => {
-  const tasks = await Task.getAll();
-  res.render("pages/tasks", { title: "TASKS PAGE", path: "/tasks", tasks });
+exports.getTasksPage = (req, res, next) => {
+  Task.getAll()
+    .then(([tasks, columnData]) => {
+      res.render("pages/tasks", { title: "TASKS PAGE", path: "/tasks", tasks });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 exports.getAddTaskPage = (req, res, next) => {
@@ -12,48 +17,66 @@ exports.getAddTaskPage = (req, res, next) => {
   });
 };
 
-exports.postAddTask = async (req, res, next) => {
+exports.postAddTask = (req, res, next) => {
   const newTask = new Task(
     req.body.title,
     req.body.description,
     req.body.imageUrl
   );
-  const result = await newTask.save();
-  res.redirect("/tasks");
+  newTask
+    .save()
+    .then(() => {
+      res.redirect("/tasks");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
-exports.getEditTaskPage = async (req, res, next) => {
+exports.getEditTaskPage = (req, res, next) => {
   const taskId = req.params.taskId;
-  const task = await Task.findById(taskId);
-
-  res.render("pages/edit-task", {
-    title: "EDIT TASK PAGE",
-    path: "",
-    task,
-  });
+  Task.findById(taskId)
+    .then(([task]) => {
+      res.render("pages/edit-task", {
+        title: "EDIT TASK PAGE",
+        path: "",
+        task: task[0],
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 exports.postEditTask = async (req, res, next) => {
   const taskId = req.params.taskId;
-  const task = await Task.findById(taskId);
-  if (task) {
-    await Task.updateTask(
-      taskId,
-      req.body.title,
-      req.body.description,
-      req.body.imageUrl
-    );
-  }
-
-  res.redirect("/tasks");
+  Task.findById(taskId)
+    .then(([task])=>{
+      if (task[0]) {
+        Task.updateTask(
+          taskId,
+          req.body.title,
+          req.body.description,
+          req.body.imageUrl
+        )
+          .then((result) => {
+            res.redirect("/tasks");
+          })
+          .catch((err) => console.log(err));
+      }
+    })
+    .catch((err) => console.log(err));
 };
 
-exports.postDeleteTask = async (req, res, next) => {
+exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
-  const task = await Task.findById(taskId);
-  if (task) {
-    await Task.deleteTask(taskId);
-  }
-
-  res.redirect("/tasks");
+  Task.findById(taskId)
+    .then(([task]) => {
+      if (task[0]) {
+        Task.deleteTask(taskId)
+          .then((result) => {
+            res.redirect("/tasks");
+          })
+          .catch((err) => console.log(err));
+      }
+    })
+    .catch((err) => console.log(err));
 };

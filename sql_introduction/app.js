@@ -8,10 +8,6 @@ const path = require("path");
 
 const port = 3000;
 
-const db = require('./helpers/database');
-
-db.execute()
-
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));

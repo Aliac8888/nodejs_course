@@ -1,18 +1,4 @@
-const path = require("path");
-const fs = require("fs");
-const rootDir = require("../helpers/rootDir");
-
-const filePath = path.join(rootDir, "data", "tasks.json");
-
-const getAllTasks = async () => {
-  try {
-    const data = await fs.promises.readFile(filePath, "utf8");
-    return JSON.parse(data);
-  } catch (error) {
-    console.log(error);
-    return [];
-  }
-};
+const db = require("../helpers/database");
 
 module.exports = class {
   constructor(title, description, imageUrl) {
@@ -23,47 +9,28 @@ module.exports = class {
   }
 
   async save() {
-    const tasks = await getAllTasks();
-    let taskExists = false;
-    if (tasks.length > 0) {
-      tasks.forEach((task) => {
-        if (task.title === this.title) {
-          console.log("task already exists.");
-          return (taskExists = true);
-        }
-      });
-    }
-    if (taskExists) {
-      return false;
-    }
-    fs.writeFileSync(filePath, JSON.stringify([...tasks, this]));
-    return true;
-  }
-
-  static async getAll() {
-    return await getAllTasks();
-  }
-
-  static async findById(id) {
-    const tasks = await getAllTasks();
-    const task = tasks.find((t) => t.id === id);
-    return task;
-  }
-
-  static async updateTask(id, title, description, imageUrl) {
-    const tasks = await getAllTasks();
-    const updatedTasks = tasks.filter(t => t.id !== id);
-    fs.writeFileSync(
-      filePath,
-      JSON.stringify([...updatedTasks, { id, title, description, imageUrl }])
+    return db.execute(
+      "INSERT INTO tasks (title,description,imageUrl) Values (?,?,?)",
+      [this.title, this.description, this.imageUrl]
     );
-    return true;
   }
 
-  static async deleteTask(id) {
-    const tasks = await getAllTasks();
-    const updatedTasks = tasks.filter(t => t.id !== id);
-    fs.writeFileSync(filePath, JSON.stringify(updatedTasks));
-    return true;
+  static getAll() {
+    return db.execute("SELECT * FROM tasks");
+  }
+
+  static findById(id) {
+    return db.execute("SELECT * FROM tasks WHERE tasks.id = ?",[id]);
+  }
+
+  static updateTask(id, title, description, imageUrl) {
+    return db.execute(
+      "UPDATE tasks SET tasks.title = ?,tasks.description = ?, tasks.imageUrl = ? WHERE tasks.id = ?",
+      [title, description, imageUrl, id]
+    );
+  }
+
+  static deleteTask(id) {
+    return db.execute("DELETE FROM tasks WHERE id = ?",[id])
   }
 };
