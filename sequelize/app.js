@@ -5,6 +5,7 @@ const taskRoutes = require("./routes/tasks");
 const mainRoutes = require("./routes/main");
 const errorController = require("./controllers/errorController");
 const path = require("path");
+const sequelize = require("./helpers/database");
 
 const port = 3000;
 
@@ -19,6 +20,11 @@ app.use(mainRoutes);
 
 app.use(errorController.showErrorPage);
 
-app.listen(port, () => {
-  console.log(`app started on port ${port}`);
-});
+sequelize
+  .sync()
+  .then(() => {
+    app.listen(port, () => {
+      console.log(`app started on port ${port}`);
+    });
+  })
+  .catch((err) => console.log(err));
