@@ -1,8 +1,8 @@
 const Task = require("../models/task");
 
 exports.getTasksPage = (req, res, next) => {
-  Task.getAll()
-    .then(([tasks, columnData]) => {
+  Task.findAll()
+    .then((tasks) => {
       res.render("pages/tasks", { title: "TASKS PAGE", path: "/tasks", tasks });
     })
     .catch((err) => {
@@ -18,13 +18,11 @@ exports.getAddTaskPage = (req, res, next) => {
 };
 
 exports.postAddTask = (req, res, next) => {
-  const newTask = new Task(
-    req.body.title,
-    req.body.description,
-    req.body.imageUrl
-  );
-  newTask
-    .save()
+  Task.create({
+    title: req.body.title,
+    description: req.body.description,
+    imageUrl: req.body.imageUrl,
+  })
     .then(() => {
       res.redirect("/tasks");
     })
@@ -35,48 +33,36 @@ exports.postAddTask = (req, res, next) => {
 
 exports.getEditTaskPage = (req, res, next) => {
   const taskId = req.params.taskId;
-  Task.findById(taskId)
-    .then(([task]) => {
+  Task.findByPk(taskId)
+    .then((task) => {
       res.render("pages/edit-task", {
         title: "EDIT TASK PAGE",
         path: "",
-        task: task[0],
+        task: task,
       });
     })
     .catch((err) => console.log(err));
 };
 
-exports.postEditTask = async (req, res, next) => {
+exports.postEditTask = (req, res, next) => {
   const taskId = req.params.taskId;
-  Task.findById(taskId)
-    .then(([task])=>{
-      if (task[0]) {
-        Task.updateTask(
-          taskId,
-          req.body.title,
-          req.body.description,
-          req.body.imageUrl
-        )
-          .then((result) => {
-            res.redirect("/tasks");
-          })
-          .catch((err) => console.log(err));
-      }
+  Task.update(
+    {
+      title: req.body.title,
+      description: req.body.description,
+      imageUrl: req.body.imageUrl,
+    },
+    { where: { id: taskId } }
+  )
+    .then((result) => {
+      res.redirect("/tasks");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err)); 
 };
 
 exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
-  Task.findById(taskId)
-    .then(([task]) => {
-      if (task[0]) {
-        Task.deleteTask(taskId)
-          .then((result) => {
-            res.redirect("/tasks");
-          })
-          .catch((err) => console.log(err));
-      }
-    })
+  Task.destroy({ where: { id: taskId } })
+    .then(() => res.redirect("/tasks"))
     .catch((err) => console.log(err));
 };
