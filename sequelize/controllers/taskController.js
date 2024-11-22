@@ -1,7 +1,8 @@
 const Task = require("../models/task");
 
 exports.getTasksPage = (req, res, next) => {
-  Task.findAll()
+  req.user
+    .getTasks()
     .then((tasks) => {
       res.render("pages/tasks", { title: "TASKS PAGE", path: "/tasks", tasks });
     })
@@ -18,11 +19,12 @@ exports.getAddTaskPage = (req, res, next) => {
 };
 
 exports.postAddTask = (req, res, next) => {
-  Task.create({
-    title: req.body.title,
-    description: req.body.description,
-    imageUrl: req.body.imageUrl,
-  })
+  req.user
+    .createTask({
+      title: req.body.title,
+      description: req.body.description,
+      imageUrl: req.body.imageUrl,
+    })
     .then(() => {
       res.redirect("/tasks");
     })
@@ -57,7 +59,7 @@ exports.postEditTask = (req, res, next) => {
     .then((result) => {
       res.redirect("/tasks");
     })
-    .catch((err) => console.log(err)); 
+    .catch((err) => console.log(err));
 };
 
 exports.postDeleteTask = (req, res, next) => {
