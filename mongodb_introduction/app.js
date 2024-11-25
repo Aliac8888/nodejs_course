@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-// const taskRoutes = require("./routes/tasks");
+const taskRoutes = require("./routes/tasks");
 const mainRoutes = require("./routes/main");
 const errorController = require("./controllers/errorController");
 const path = require("path");
@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 //     .catch((err) => console.log(err));
 // });
 
-// app.use("/tasks", taskRoutes);
+app.use("/tasks", taskRoutes);
 
 app.use(mainRoutes);
 

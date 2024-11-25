@@ -1,16 +1,21 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = require("../helpers/database");
+const mongoConnect = require("../helpers/database");
 
-const Task = sequelize.define("Task", {
-  id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  title: { type: DataTypes.STRING, allowNull: false },
-  description: DataTypes.TEXT,
-  imageUrl: DataTypes.STRING,
-});
+class Task {
+  constructor(title, description, imageUrl) {
+    this.title = title;
+    this.description = description;
+    this.imageUrl = imageUrl;
+  }
+
+  save() {
+    mongoConnect()
+      .then((db) => {
+        db.collection("tasks").insertOne(this);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}
 
 module.exports = Task;
