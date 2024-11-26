@@ -54,9 +54,9 @@ exports.postEditTask = (req, res, next) => {
     .catch((err) => console.log(err));
 };
 
-// exports.postDeleteTask = (req, res, next) => {
-//   const taskId = req.body.taskId;
-//   Task.destroy({ where: { id: taskId } })
-//     .then(() => res.redirect("/tasks"))
-//     .catch((err) => console.log(err));
-// };
+exports.postDeleteTask = (req, res, next) => {
+  const taskId = req.body.taskId;
+  Task.deleteById(taskId)
+    .then(() => res.redirect("/tasks"))
+    .catch((err) => console.log(err));
+};

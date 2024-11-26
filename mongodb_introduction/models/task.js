@@ -20,7 +20,7 @@ class Task {
             {
               $set: {
                 title: this.title,
-                descirption: this.description,
+                description: this.description,
                 imageUrl: this.imageUrl,
               },
             }
@@ -49,6 +49,16 @@ class Task {
           .collection("tasks")
           .find({ _id: new mongodb.ObjectId(taskId) })
           .next();
+      })
+      .catch((err) => console.log(err));
+  }
+
+  static deleteById(taskId){
+    return mongoConnect()
+      .then((db) => {
+        return db
+          .collection("tasks")
+          .deleteOne({ _id: new mongodb.ObjectId(taskId) });
       })
       .catch((err) => console.log(err));
   }
