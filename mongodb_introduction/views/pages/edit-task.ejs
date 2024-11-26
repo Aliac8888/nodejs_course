@@ -8,7 +8,7 @@
     <main>
         <div class="form-container">
             <h2>Edit Task <%= task.title %></h2>
-            <form action='/tasks/edit-task/<%= task.id %>' method='POST'>
+            <form action='/tasks/edit-task/<%= task._id %>' method='POST'>
                 <label for="title">Task Title</label>
                 <input type='text' name='title' id='title' required placeholder="Enter task title" value="<%= task.title %>">
     

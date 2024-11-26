@@ -10,7 +10,7 @@ router.post("/add-task", taskController.postAddTask);
 
 router.get("/edit/:taskId", taskController.getEditTaskPage);
 
-// router.post("/edit-task/:taskId", taskController.postEditTask);
+router.post("/edit-task/:taskId", taskController.postEditTask);
 
 // router.post("/delete", taskController.postDeleteTask);
 

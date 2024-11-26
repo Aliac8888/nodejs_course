@@ -1,17 +1,33 @@
-const mongodb = require('mongodb');
+const mongodb = require("mongodb");
 const mongoConnect = require("../helpers/database");
 
 class Task {
-  constructor(title, description, imageUrl) {
+  constructor(title, description, imageUrl, _id) {
     this.title = title;
     this.description = description;
     this.imageUrl = imageUrl;
+    this._id = _id;
   }
 
   save() {
     return mongoConnect()
       .then((db) => {
-        db.collection("tasks").insertOne(this);
+        if (this._id) {
+          return db.collection("tasks").updateOne(
+            {
+              _id: new mongodb.ObjectId(this._id),
+            },
+            {
+              $set: {
+                title: this.title,
+                descirption: this.description,
+                imageUrl: this.imageUrl,
+              },
+            }
+          );
+        } else {
+          return db.collection("tasks").insertOne(this);
+        }
       })
       .catch((err) => {
         console.log(err);
