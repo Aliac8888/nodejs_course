@@ -19,11 +19,11 @@
                                         <%= task.description %>
                                     </p>
                                     <div class="task-actions">
-                                        <a href="/tasks/edit/<%= task.id %>" class="edit-button">
+                                        <a href="/tasks/edit/<%= task._id %>" class="edit-button">
                                             Edit
                                         </a>
                                         <form action="/tasks/delete" method="post">
-                                            <input type="hidden" name="taskId" value="<%= task.id %>">
+                                            <input type="hidden" name="taskId" value="<%= task._id %>">
                                             <button type="submit" class="delete-button">Delete</button>
                                         </form>
                                     </div>
