@@ -3,11 +3,12 @@ const mongoConnect = require("../helpers/database");
 const objectId = mongodb.ObjectId.createFromHexString;
 
 class Task {
-  constructor(title, description, imageUrl, _id) {
+  constructor(title, description, imageUrl, _id, userId) {
     this.title = title;
     this.description = description;
     this.imageUrl = imageUrl;
     this._id = _id;
+    this.userId = userId;
   }
 
   save() {
@@ -23,6 +24,7 @@ class Task {
                 title: this.title,
                 description: this.description,
                 imageUrl: this.imageUrl,
+                userId: this.userId,
               },
             }
           );

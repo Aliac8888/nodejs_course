@@ -19,7 +19,9 @@ exports.postAddTask = (req, res, next) => {
   const task = new Task(
     req.body.title,
     req.body.description,
-    req.body.imageUrl
+    req.body.imageUrl,
+    null,
+    req.user._id
   );
   task
     .save()
@@ -46,7 +48,8 @@ exports.postEditTask = (req, res, next) => {
     req.body.title,
     req.body.description,
     req.body.imageUrl,
-    taskId
+    taskId,
+    req.user._id
   );
   task
     .save()
