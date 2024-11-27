@@ -1,15 +1,30 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = require("../helpers/database");
+const mongodb = require("mongodb");
+const mongoConnect = require("../helpers/database");
+const objectId = mongodb.ObjectId.createFromHexString;
 
-const User = sequelize.define("User", {
-  id: {
-    type: DataTypes.BIGINT,
-    allowNull: false,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  name: { type: DataTypes.STRING, allowNull: false },
-  email: DataTypes.STRING,
-});
+class User {
+  constructor(name, email) {
+    this.name = name;
+    this.email = email;
+  }
+
+  save() {
+    return mongoConnect()
+      .then((db) => {
+        return db.collection("users").insertOne(this);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  static findById(userId) {
+    return mongoConnect()
+      .then((db) => {
+        return db.collection("users").findOne({ _id: objectId(userId) });
+      })
+      .catch((err) => console.log(err));
+  }
+}
 
 module.exports = User;
