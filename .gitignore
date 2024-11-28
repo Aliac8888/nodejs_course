@@ -4,4 +4,5 @@ mvc/node_modules/
 sql_introduction/node_modules/
 sequelize/node_modules/
 mongodb_introduction/node_modules/
+mongoose/node_modules/
 express_js_basics/title.txt

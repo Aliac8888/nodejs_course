@@ -1,0 +1,24 @@
+{
+  "name": "nodejs_basics",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "aliac",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.7.6",
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "mongodb": "^6.11.0",
+    "mongoose": "^8.8.3",
+    "mysql2": "^3.11.4",
+    "sequelize": "^6.37.5"
+  }
+}
