@@ -21,6 +21,7 @@ exports.postAddTask = (req, res, next) => {
     title: title,
     imageUrl: imageUrl,
     description: description,
+    userId: req.user._id,
   });
   task
     .save()
@@ -48,6 +49,7 @@ exports.postEditTask = (req, res, next) => {
     title: req.body.title,
     description: req.body.description,
     imageUrl: req.body.imageUrl,
+    userId: req.user._id,
   })
     .then(() => res.redirect("/tasks"))
     .catch((err) => console.log(err));
