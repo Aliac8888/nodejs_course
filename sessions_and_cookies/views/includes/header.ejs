@@ -1,0 +1,27 @@
+<header>
+    <nav>
+        <div class="nav-container">
+            <ul class="nav">
+                <li>
+                    <a href="/" class="<%= path ==='/' ? 'active' : '' %>">Home</a>
+                </li>
+                <li>
+                    <a href="/tasks" class="<%= path ==='/tasks' ? 'active' : '' %>">Tasks</a>
+                </li>
+                <li>
+                    <a href="/tasks/add-task-page" class="<%= path ==='/tasks/add-task-page' ? 'active' : '' %>">Add Task Page</a>
+                </li>
+            </ul>
+        </div>
+        <div class="auth-container">
+            <ul class="auth">
+                <li>
+                    <a href="/" class="<%= path ==='/login' ? 'active' : '' %>">Login</a>
+                </li>
+                <li>
+                    <a href="/tasks">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
