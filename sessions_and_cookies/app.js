@@ -3,6 +3,7 @@ const app = express();
 
 const taskRoutes = require("./routes/tasks");
 const mainRoutes = require("./routes/main");
+const authRoutes = require("./routes/auth");
 const errorController = require("./controllers/errorController");
 const path = require("path");
 const mongoose = require("mongoose");
@@ -27,6 +28,8 @@ app.use((req, res, next) => {
 app.use("/tasks", taskRoutes);
 
 app.use(mainRoutes);
+
+app.use(authRoutes);
 
 app.use(errorController.showErrorPage);
 
