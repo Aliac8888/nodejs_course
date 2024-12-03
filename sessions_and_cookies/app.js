@@ -8,6 +8,7 @@ const errorController = require("./controllers/errorController");
 const path = require("path");
 const mongoose = require("mongoose");
 const User = require("./models/user");
+const session = require("express-session");
 
 const port = 3000;
 
@@ -15,6 +16,13 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: "my_secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use((req, res, next) => {
   User.findById("67493df749767ca2c8b3679a")
