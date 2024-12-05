@@ -19,7 +19,9 @@
                     <a href="/login" class="<%= path ==='/login' ? 'active' : '' %>">Login</a>
                 </li>
                 <li>
-                    <a href="/logout">Logout</a>
+                    <form action="/logout" method="post">
+                        <button id="logout" type="submit">Logout</button>
+                    </form>
                 </li>
             </ul>
         </div>
