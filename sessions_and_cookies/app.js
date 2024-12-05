@@ -9,7 +9,9 @@ const path = require("path");
 const mongoose = require("mongoose");
 const User = require("./models/user");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 
+const MONGO_URI = "mongodb://127.0.0.1:27017/myTaskManager";
 const port = 3000;
 
 app.set("view engine", "ejs");
@@ -21,6 +23,10 @@ app.use(
     secret: "my_secret",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: MONGO_URI,
+      collectionName: "sessions",
+    }),
   })
 );
 
@@ -42,7 +48,7 @@ app.use(authRoutes);
 app.use(errorController.showErrorPage);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/myTaskManager")
+  .connect(MONGO_URI)
   .then(() => {
     app.listen(port, () => {
       console.log(`app started on port ${port}`);
