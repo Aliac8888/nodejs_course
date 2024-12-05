@@ -1,5 +1,5 @@
 exports.getLoginPage = (req, res, next) => {
-  // const isAuthenticated = req.headers.cookie.split("=")[1];
+  console.log(req.session.loggedIn);
   res.render("pages/auth/login", {
     title: "LOGIN PAGE",
     path: "/login",
@@ -7,6 +7,6 @@ exports.getLoginPage = (req, res, next) => {
 };
 
 exports.postLogin = (req, res, next) => {
-  res.cookie("isLoggedIn", "true", { httpOnly: true });
+  req.session.loggedIn = true;
   res.redirect("/");
 };
