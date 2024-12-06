@@ -45,7 +45,7 @@ textarea:focus {
 }
 
 /* Submit button styling */
-button {
+button#task-submit {
     padding: 12px;
     font-size: 1rem;
     color: white;
@@ -56,6 +56,6 @@ button {
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+button#task-submit:hover {
     background-color: #218838;
 }

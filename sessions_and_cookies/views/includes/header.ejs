@@ -15,14 +15,20 @@
         </div>
         <div class="auth-container">
             <ul class="auth">
-                <li>
-                    <a href="/login" class="<%= path ==='/login' ? 'active' : '' %>">Login</a>
-                </li>
-                <li>
-                    <form action="/logout" method="post">
-                        <button id="logout" type="submit">Logout</button>
-                    </form>
-                </li>
+                <% if (isLoggedIn) { %>
+                    <li>
+                        <form action="/logout" method="post">
+                            <button id="logout" type="submit">Logout</button>
+                        </form>
+                    </li>
+                <% } else { %>
+                    <li>
+                        <a href="/login" class="<%= path ==='/login' ? 'active' : '' %>">Login</a>
+                    </li> 
+                      <li>
+                        <a href="/signup" class="<%= path ==='/signup' ? 'active' : '' %>">Signup</a>
+                    </li>
+                <% } %>
             </ul>
         </div>
     </nav>

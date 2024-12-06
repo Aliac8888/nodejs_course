@@ -1,8 +1,8 @@
 exports.getLoginPage = (req, res, next) => {
-  console.log(req.session.loggedIn);
   res.render("pages/auth/login", {
     title: "LOGIN PAGE",
     path: "/login",
+    isLoggedIn: req.session.loggedIn,
   });
 };
 

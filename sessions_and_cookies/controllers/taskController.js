@@ -3,7 +3,12 @@ const Task = require("../models/task");
 exports.getTasksPage = (req, res, next) => {
   Task.find()
     .then((tasks) => {
-      res.render("pages/tasks", { title: "TASKS PAGE", path: "/tasks", tasks });
+      res.render("pages/tasks", {
+        title: "TASKS PAGE",
+        path: "/tasks",
+        tasks,
+        isLoggedIn: req.session.loggedIn,
+      });
     })
     .catch((err) => console.log(err));
 };
@@ -12,6 +17,7 @@ exports.getAddTaskPage = (req, res, next) => {
   res.render("pages/add-task", {
     title: "ADD TASK PAGE",
     path: "/tasks/add-task-page",
+    isLoggedIn: req.session.loggedIn,
   });
 };
 
@@ -37,6 +43,7 @@ exports.getEditTaskPage = (req, res, next) => {
         title: "EDIT TASK PAGE",
         path: "",
         task: task,
+        isLoggedIn: req.session.loggedIn,
       });
     })
     .catch((err) => console.log(err));
