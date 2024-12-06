@@ -17,9 +17,19 @@ exports.getSignupPage = (req, res, next) => {
   });
 };
 
-exports.postLogin = (req, res, next) => {
-  req.session.loggedIn = true;
-  res.redirect("/");
+exports.postLogin = async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.redirect("/login");
+  }
+  const userMatched = await bcrypt.compare(password, user.password);
+  if (userMatched) {
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+  }
+  return res.redirect("/login");
 };
 
 exports.postSignup = async (req, res, next) => {
