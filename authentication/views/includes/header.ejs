@@ -8,9 +8,12 @@
                 <li>
                     <a href="/tasks" class="<%= path ==='/tasks' ? 'active' : '' %>">Tasks</a>
                 </li>
-                <li>
-                    <a href="/tasks/add-task-page" class="<%= path ==='/tasks/add-task-page' ? 'active' : '' %>">Add Task Page</a>
-                </li>
+                <% if (isLoggedIn) { %>
+                    <li>
+                        <a href="/tasks/add-task-page" class="<%= path ==='/tasks/add-task-page' ? 'active' : '' %>">Add
+                            Task Page</a>
+                    </li>
+                <% } %>
             </ul>
         </div>
         <div class="auth-container">
@@ -21,14 +24,14 @@
                             <button id="logout" type="submit">Logout</button>
                         </form>
                     </li>
-                <% } else { %>
-                    <li>
-                        <a href="/login" class="<%= path ==='/login' ? 'active' : '' %>">Login</a>
-                    </li> 
-                      <li>
-                        <a href="/signup" class="<%= path ==='/signup' ? 'active' : '' %>">Signup</a>
-                    </li>
-                <% } %>
+                    <% } else { %>
+                        <li>
+                            <a href="/login" class="<%= path ==='/login' ? 'active' : '' %>">Login</a>
+                        </li>
+                        <li>
+                            <a href="/signup" class="<%= path ==='/signup' ? 'active' : '' %>">Signup</a>
+                        </li>
+                        <% } %>
             </ul>
         </div>
     </nav>
