@@ -23,6 +23,7 @@
                                             Edit
                                         </a>
                                         <form action="/tasks/delete" method="post">
+                                            <input type="hidden" name="_csrf" value="<%= token %>">
                                             <input type="hidden" name="taskId" value="<%= task._id %>">
                                             <button type="submit" class="delete-button">Delete</button>
                                         </form>

@@ -9,6 +9,7 @@
         <div class="form-container">
             <h2>Edit Task <%= task.title %></h2>
             <form action='/tasks/edit-task/<%= task._id %>' method='POST'>
+                <input type="hidden" name="_csrf" value="<%= token %>">
                 <label for="title">Task Title</label>
                 <input type='text' name='title' id='title' required placeholder="Enter task title" value="<%= task.title %>">
     

@@ -5,7 +5,6 @@ exports.getLoginPage = (req, res, next) => {
   res.render("pages/auth/login", {
     title: "LOGIN PAGE",
     path: "/login",
-    isLoggedIn: req.session.loggedIn,
   });
 };
 
@@ -13,7 +12,6 @@ exports.getSignupPage = (req, res, next) => {
   res.render("pages/auth/signup", {
     title: "Signup PAGE",
     path: "/signup",
-    isLoggedIn: req.session.loggedIn,
   });
 };
 

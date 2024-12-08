@@ -7,7 +7,6 @@ exports.getTasksPage = (req, res, next) => {
         title: "TASKS PAGE",
         path: "/tasks",
         tasks,
-        isLoggedIn: req.session.loggedIn,
       });
     })
     .catch((err) => console.log(err));
@@ -17,7 +16,6 @@ exports.getAddTaskPage = (req, res, next) => {
   res.render("pages/add-task", {
     title: "ADD TASK PAGE",
     path: "/tasks/add-task-page",
-    isLoggedIn: req.session.loggedIn,
   });
 };
 
@@ -43,7 +41,6 @@ exports.getEditTaskPage = (req, res, next) => {
         title: "EDIT TASK PAGE",
         path: "",
         task: task,
-        isLoggedIn: req.session.loggedIn,
       });
     })
     .catch((err) => console.log(err));

@@ -9,6 +9,7 @@
         <div class="form-container">
             <h2>Add a New Task</h2>
             <form action='/tasks/add-task' method='POST'>
+                <input type="hidden" name="_csrf" value="<%= token %>">
                 <label for="title">Task Title</label>
                 <input type='text' name='title' id='title' required placeholder="Enter task title">
     

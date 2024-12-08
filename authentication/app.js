@@ -11,8 +11,12 @@ const User = require("./models/user");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
+const cookieParser = require("cookie-parser");
+const { generateToken } = require("./helpers/csrfConfig");
+
 const MONGO_URI = "mongodb://127.0.0.1:27017/myTaskManager";
 const port = 3000;
+const COOKIES_SECRET = "super_cookie_secret";
 
 app.set("view engine", "ejs");
 
@@ -30,8 +34,19 @@ app.use(
   })
 );
 
+app.use(cookieParser(COOKIES_SECRET));
+
 app.use((req, res, next) => {
-  User.findById("67493df749767ca2c8b3679a")
+  res.locals.isLoggedIn = req.session.loggedIn;
+  res.locals.token = generateToken(req, res);
+  next();
+});
+
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then((user) => {
       req.user = user;
       next();
