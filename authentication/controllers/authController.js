@@ -12,6 +12,7 @@ exports.getSignupPage = (req, res, next) => {
   res.render("pages/auth/signup", {
     title: "Signup PAGE",
     path: "/signup",
+    errorMessage: req.flash("error"),
   });
 };
 
@@ -19,6 +20,7 @@ exports.postLogin = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email: email });
   if (!user) {
+    req.flash("error", "User with this email not found!");
     return res.redirect("/login");
   }
   const userMatched = await bcrypt.compare(password, user.password);
@@ -27,21 +29,39 @@ exports.postLogin = async (req, res, next) => {
     req.session.user = user;
     return res.redirect("/");
   }
+  req.flash("error", "Unknown error!");
   return res.redirect("/login");
 };
 
 exports.postSignup = async (req, res, next) => {
   const { name, email, password, confirm } = req.body;
+
+  if (!name || !email || !password || !confirm) {
+    req.flash("error", "All fields are required!");
+    return res.redirect("/signup");
+  }
+
   if (password !== confirm) {
+    req.flash("error", "Password and Confirm Password do not match!");
     return res.redirect("/signup");
   }
-  const hashedPass = await bcrypt.hash(password, 12);
-  const userExists = await User.findOne({ email: email });
-  if (userExists) {
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      req.flash("error", "User with this email already exists!");
+      return res.redirect("/signup");
+    }
+
+    const hashedPass = await bcrypt.hash(password, 12);
+    await User.create({ name, email, password: hashedPass });
+
+    req.flash("success", "Account created successfully!");
+    return res.redirect("/login");
+  } catch (err) {
+    console.error("Error during signup:", err);
+    req.flash("error", "Something went wrong. Please try again.");
     return res.redirect("/signup");
   }
-  const result = await User.create({ name, email, password: hashedPass });
-  return res.redirect("/login");
 };
 
 exports.postLogout = (req, res, next) => {

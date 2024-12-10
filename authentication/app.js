@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const User = require("./models/user");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
+const flash = require("connect-flash");
 
 const cookieParser = require("cookie-parser");
 const { generateToken } = require("./helpers/csrfConfig");
@@ -35,6 +36,8 @@ app.use(
 );
 
 app.use(cookieParser(COOKIES_SECRET));
+
+app.use(flash());
 
 app.use((req, res, next) => {
   res.locals.isLoggedIn = req.session.loggedIn;
