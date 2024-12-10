@@ -24,6 +24,13 @@
                     </div>
                 </form>
             </main>
+            <% if (errorMessage.length> 0) { %>
+                <div class="error-message-container">
+                    <p class="error-message">
+                        <%= errorMessage[0] %>
+                    </p>
+                </div>
+            <% } %>
     </body>
 
 </html>

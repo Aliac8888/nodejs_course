@@ -5,6 +5,7 @@ exports.getLoginPage = (req, res, next) => {
   res.render("pages/auth/login", {
     title: "LOGIN PAGE",
     path: "/login",
+    errorMessage: req.flash("error"),
   });
 };
 
@@ -18,19 +19,26 @@ exports.getSignupPage = (req, res, next) => {
 
 exports.postLogin = async (req, res, next) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email: email });
-  if (!user) {
-    req.flash("error", "User with this email not found!");
+
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      req.flash("error", "User with this email not found!");
+      return res.redirect("/login");
+    }
+    const userMatched = await bcrypt.compare(password, user.password);
+    if (userMatched) {
+      req.session.loggedIn = true;
+      req.session.user = user;
+      return res.redirect("/");
+    }
+    req.flash("error", "Unknown error!");
+    return res.redirect("/login");
+  } catch (error) {
+    console.error("Error during login:", err);
+    req.flash("error", "Unknown error!");
     return res.redirect("/login");
   }
-  const userMatched = await bcrypt.compare(password, user.password);
-  if (userMatched) {
-    req.session.loggedIn = true;
-    req.session.user = user;
-    return res.redirect("/");
-  }
-  req.flash("error", "Unknown error!");
-  return res.redirect("/login");
 };
 
 exports.postSignup = async (req, res, next) => {
