@@ -25,8 +25,6 @@
     "mongodb": "^6.11.0",
     "mongoose": "^8.8.3",
     "mysql2": "^3.11.4",
-    "nodemailer": "^6.9.16",
-    "nodemailer-sendgrid-transport": "^0.2.0",
     "sequelize": "^6.37.5"
   }
 }
