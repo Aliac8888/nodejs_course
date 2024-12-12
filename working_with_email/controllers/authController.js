@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
+const mailClient = require('../helpers/mailClient');
 
 exports.getLoginPage = (req, res, next) => {
   res.render("pages/auth/login", {
@@ -64,6 +65,7 @@ exports.postSignup = async (req, res, next) => {
     await User.create({ name, email, password: hashedPass });
 
     req.flash("success", "Account created successfully!");
+    mailClient.sendWelcome(email,"welcome to my website","textxtxtxtxetsetsdewrwer");
     return res.redirect("/login");
   } catch (err) {
     console.error("Error during signup:", err);
