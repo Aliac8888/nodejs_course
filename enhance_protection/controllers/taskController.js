@@ -35,8 +35,11 @@ exports.postAddTask = (req, res, next) => {
 
 exports.getEditTaskPage = (req, res, next) => {
   const taskId = req.params.taskId;
-  Task.findById(taskId)
+  Task.findOne({ _id: taskId, userId: req.user._id })
     .then((task) => {
+      if (!task) {
+        return res.redirect("/tasks");
+      }
       res.render("pages/edit-task", {
         title: "EDIT TASK PAGE",
         path: "",
@@ -49,19 +52,22 @@ exports.getEditTaskPage = (req, res, next) => {
 exports.postEditTask = (req, res, next) => {
   const taskId = req.params.taskId;
 
-  Task.findByIdAndUpdate(taskId, {
-    title: req.body.title,
-    description: req.body.description,
-    imageUrl: req.body.imageUrl,
-    userId: req.user._id,
-  })
+  Task.findOneAndUpdate(
+    { _id: taskId, userId: req.user._id },
+    {
+      title: req.body.title,
+      description: req.body.description,
+      imageUrl: req.body.imageUrl,
+      userId: req.user._id,
+    }
+  )
     .then(() => res.redirect("/tasks"))
     .catch((err) => console.log(err));
 };
 
 exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
-  Task.findByIdAndDelete(taskId)
+  Task.findOneAndDelete({ _id: taskId, userId: req.user._id })
     .then(() => res.redirect("/tasks"))
     .catch((err) => console.log(err));
 };
