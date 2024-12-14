@@ -45,7 +45,7 @@ exports.postLogin = async (req, res, next) => {
 exports.postSignup = async (req, res, next) => {
   const { name, email, password, confirm } = req.body;
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {    
+  if (!errors.isEmpty()) {
     req.flash("error", errors.array()[0].msg);
     return res.redirect("/signup");
   }
