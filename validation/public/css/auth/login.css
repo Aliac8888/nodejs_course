@@ -47,13 +47,3 @@ main form {
 main h1 {
     margin-bottom: 20px;
 }
-
-.error-message-container{
-    display: flex;
-    justify-content: center;
-}
-
-.error-message{
-    font-weight: bold;
-    color: #b60000;
-}

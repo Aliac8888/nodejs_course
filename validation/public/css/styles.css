@@ -81,3 +81,13 @@ main {
 .active {
   color: #006bff;
 }
+
+.error-message-container{
+    display: flex;
+    justify-content: center;
+}
+
+.error-message{
+    font-weight: bold;
+    color: #b60000;
+}

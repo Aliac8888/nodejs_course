@@ -11,18 +11,25 @@
             <form action='/tasks/add-task' method='POST'>
                 <input type="hidden" name="_csrf" value="<%= token %>">
                 <label for="title">Task Title</label>
-                <input type='text' name='title' id='title' required placeholder="Enter task title">
+                <input type='text' name='title' id='title' required placeholder="Enter task title" value="<%= oldInput.title %>">
     
                 <label for="description">Description</label>
-                <textarea name="description" id="description" rows="4" placeholder="Enter task description"></textarea>
+                <textarea name="description" id="description" rows="4" placeholder="Enter task description"><%= oldInput.description %></textarea>
     
                 <label for="imageUrl">Image URL</label>
-                <input type='url' name='imageUrl' id='imageUrl' placeholder="Enter image URL (optional)">
+                <input type='url' name='imageUrl' id='imageUrl' placeholder="Enter image URL (optional)" value="<%= oldInput.imageUrl %>">
     
                 <button type='submit' id="task-submit">ADD TASK</button>
             </form>
         </div>
     </main>
+    <% if (errorMessage.length> 0) { %>
+        <div class="error-message-container">
+            <p class="error-message">
+                <%= errorMessage %>
+            </p>
+        </div>
+    <% } %>
 </body>
 
 </html>
