@@ -9,7 +9,11 @@ router.get("/login", authController.getLoginPage);
 
 router.get("/signup", authController.getSignupPage);
 
-router.post("/login", authController.postLogin);
+router.post(
+  "/login",
+  [body("email").isEmail(), body("password").isLength({ min: 4 })],
+  authController.postLogin
+);
 
 router.post(
   "/signup",
