@@ -22,8 +22,19 @@ router.post(
           throw new Error("User with this email already exists!");
         }
         return true;
-      }).normalizeEmail(),
-      body("name","name is not valid").notEmpty().trim().escape()
+      })
+      .normalizeEmail(),
+    body("name", "name is not valid").notEmpty().trim().escape(),
+    body("password")
+      .trim()
+      .isLength({ min: 4 })
+      .withMessage("password must be at least 4 characters"),
+    body("confirm").custom((value, { req }) => {
+      if (req.body.password !== value) {
+        throw new Error("Password and Confirm Password do not match!");
+      }
+      return true;
+    }),
   ],
   authController.postSignup
 );

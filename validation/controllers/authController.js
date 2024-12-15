@@ -55,10 +55,6 @@ exports.postSignup = async (req, res, next) => {
     return res.redirect("/signup");
   }
 
-  if (password !== confirm) {
-    req.flash("error", "Password and Confirm Password do not match!");
-    return res.redirect("/signup");
-  }
   try {
     const hashedPass = await bcrypt.hash(password, 12);
     await User.create({ name, email, password: hashedPass });
