@@ -51,12 +51,12 @@ exports.postLogin = async (req, res, next) => {
       req.session.user = user;
       return res.redirect("/");
     }
-    req.flash("error", "Unknown error!");
+    req.flash("error", "error occurred: user not matched");
     return res.redirect("/login");
   } catch (error) {
-    console.error("Error during login:", err);
-    req.flash("error", "Unknown error!");
-    return res.redirect("/login");
+    console.error("Error during login:", error);
+    error.status = 500;
+    return next(error);
   }
 };
 
@@ -80,15 +80,21 @@ exports.postSignup = async (req, res, next) => {
 
     req.flash("success", "Account created successfully!");
     return res.redirect("/login");
-  } catch (err) {
-    console.error("Error during signup:", err);
-    req.flash("error", "Something went wrong. Please try again.");
-    return res.redirect("/signup");
+  } catch (error) {
+    console.error("Error during login:", error);
+    error.status = 500;
+    return next(error);
   }
 };
 
 exports.postLogout = (req, res, next) => {
-  req.session.destroy(() => {
-    res.redirect("/");
-  });
+  try {
+    return req.session.destroy(() => {
+      return res.redirect("/");
+    });
+  } catch (error) {
+    console.error("Error during login:", error);
+    error.status = 500;
+    return next(error);
+  }
 };
