@@ -10,7 +10,11 @@ exports.getTasksPage = (req, res, next) => {
         tasks,
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      error.status = 500;
+      return next(error);
+    });
 };
 
 exports.getAddTaskPage = (req, res, next) => {
@@ -44,7 +48,11 @@ exports.postAddTask = (req, res, next) => {
   task
     .save()
     .then(() => res.redirect("/tasks"))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      error.status = 500;
+      return next(error);
+    });
 };
 
 exports.getEditTaskPage = (req, res, next) => {
@@ -61,7 +69,11 @@ exports.getEditTaskPage = (req, res, next) => {
         errorMessage: req.flash("error"),
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      error.status = 500;
+      return next(error);
+    });
 };
 
 exports.postEditTask = async (req, res, next) => {
@@ -89,12 +101,20 @@ exports.postEditTask = async (req, res, next) => {
     }
   )
     .then(() => res.redirect("/tasks"))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      error.status = 500;
+      return next(error);
+    });
 };
 
 exports.postDeleteTask = (req, res, next) => {
   const taskId = req.body.taskId;
   Task.findOneAndDelete({ _id: taskId, userId: req.user._id })
     .then(() => res.redirect("/tasks"))
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      error.status = 500;
+      return next(error);
+    });
 };
