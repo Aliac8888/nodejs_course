@@ -4,6 +4,7 @@ const taskController = require("../controllers/taskController");
 const isAuth = require("../middlewares/isAuth");
 const csrfConfig = require("../helpers/csrfConfig");
 const { body } = require("express-validator");
+const upload = require('../helpers/multerConfig');
 
 router.get("/", isAuth, taskController.getTasksPage);
 
@@ -12,12 +13,13 @@ router.get("/add-task-page", isAuth, taskController.getAddTaskPage);
 router.post(
   "/add-task",
   isAuth,
+  upload.single("image"),
   csrfConfig.doubleCsrfProtection,
   csrfConfig.csrfErrorHandler,
   [
     body("title").trim().escape().notEmpty(),
     body("description").trim().escape(),
-    body("imageUrl").trim().isURL().optional({checkFalsy:true}),
+    body("imageUrl").trim().isURL().optional({ checkFalsy: true }),
   ],
   taskController.postAddTask
 );

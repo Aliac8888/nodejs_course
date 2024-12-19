@@ -27,7 +27,10 @@ exports.getAddTaskPage = (req, res, next) => {
 };
 
 exports.postAddTask = (req, res, next) => {
-  const { title, imageUrl, description } = req.body;
+  const { title, description } = req.body;
+  const image = req.file;
+  const imageUrl = image?.path;
+  
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
