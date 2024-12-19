@@ -10,7 +10,7 @@
                     <div class="task-container">
                         <% tasks.forEach(task=> { %>
                             <div class="task-card">
-                                <img src="<%= task.imageUrl ?? 'https://via.placeholder.com/100'  %>" alt="Task Image" class="task-image">
+                                <img src="<%= task.imageUrl ? "/"+ task.imageUrl : 'https://via.placeholder.com/100' %>" alt="Task Image" class="task-image">
                                 <div class="task-content">
                                     <h3>
                                         <%= task.title %>
