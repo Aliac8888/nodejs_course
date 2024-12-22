@@ -1,8 +1,13 @@
 const Task = require("../models/task");
 const { validationResult } = require("express-validator");
 
+const ITEMS_PER_PAGE = 5;
+
 exports.getTasksPage = (req, res, next) => {
+  const currentPage = req.query.page;
   Task.find({ userId: req.user._id })
+    .skip((currentPage - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then((tasks) => {
       res.render("pages/tasks", {
         title: "TASKS PAGE",
@@ -31,7 +36,7 @@ exports.postAddTask = (req, res, next) => {
   const image = req.file;
   let imageUrl = null;
   if (image) {
-    imageUrl = image.path.replace("public\\","");
+    imageUrl = image.path.replace("public\\", "");
   }
 
   const errors = validationResult(req);
