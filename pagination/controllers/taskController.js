@@ -18,8 +18,6 @@ exports.getTasksPage = async (req, res, next) => {
       nextPage: currentPage + 1,
       lastPage: Math.ceil(totalTasks / ITEMS_PER_PAGE),
     };
-    console.log(pagination);
-
     return res.render("pages/tasks", {
       title: "TASKS PAGE",
       path: "/tasks",
