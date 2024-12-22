@@ -1,28 +1,30 @@
 const Task = require("../models/task");
 const { validationResult } = require("express-validator");
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 2;
 
 exports.getTasksPage = async (req, res, next) => {
   try {
-    const currentPage = req.query.page;
-    const totalTasks = await Task.countDocuments();
+    const currentPage = +req.query.page || 1;
+    const totalTasks = await Task.countDocuments({ userId: req.user._id });
     const tasks = await Task.find({ userId: req.user._id })
       .skip((currentPage - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE);
+    const pagination = {
+      currentPage,
+      hasPrevPage: currentPage > 1,
+      prevPage: currentPage - 1,
+      hasNextPage: ITEMS_PER_PAGE * currentPage < totalTasks,
+      nextPage: currentPage + 1,
+      lastPage: Math.ceil(totalTasks / ITEMS_PER_PAGE),
+    };
+    console.log(pagination);
 
     return res.render("pages/tasks", {
       title: "TASKS PAGE",
       path: "/tasks",
       tasks,
-      pagination: {
-        totalTasks,
-        hasNextPage: ITEMS_PER_PAGE * currentPage < totalTasks,
-        hasPrevPage: currentPage > 1,
-        nextPage: currentPage + 1,
-        prevPage: currentPage - 1,
-        lastPage: Math.ceil(totalTasks / ITEMS_PER_PAGE),
-      },
+      pagination,
     });
   } catch (error) {
     console.log(error);

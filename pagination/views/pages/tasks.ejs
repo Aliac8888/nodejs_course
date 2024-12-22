@@ -35,8 +35,25 @@
                     <% } %>
             </main>
             <section class="pagination-container">
-                <a href="/tasks/?page=1" class="active-page page-item">1</a>
-                <a href="/tasks/?page=2" class="page-item">2</a>
+                <% if (pagination.currentPage !== 1 && pagination.prevPage !== 1) { %>
+                    <a href="/tasks/?page=1" class="page-item">1</a>
+                <% } %>
+                <% if (pagination.hasPrevPage) { %>
+                    <a href="/tasks/?page=<%= pagination.prevPage %>" class="page-item">
+                        <%= pagination.prevPage %>
+                    </a>
+                <% } %>
+                <a href="/tasks/?page=<%= pagination.currentPage %>" class="active-page page-item"><%= pagination.currentPage %></a>
+                <% if (pagination.hasNextPage) { %>
+                <a href="/tasks/?page=<%= pagination.nextPage %>" class="page-item">
+                    <%= pagination.nextPage %>
+                </a>
+                <% } %>
+                <% if (pagination.lastPage !== pagination.nextPage && pagination.lastPage !== pagination.currentPage) { %>
+                <a href="/tasks/?page=<%= pagination.lastPage %>" class="page-item">
+                    <%= pagination.lastPage %>
+                </a>
+                <% } %>
             </section>
     </body>
 
