@@ -38,11 +38,11 @@ router.post(
   taskController.postEditTask
 );
 
-router.post(
-  "/delete",
+router.delete(
+  "/delete/:taskId",
   isAuth,
   csrfConfig.doubleCsrfProtection,
-  taskController.postDeleteTask
+  taskController.deleteTask
 );
 
 module.exports = router;

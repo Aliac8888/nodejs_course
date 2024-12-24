@@ -24,10 +24,10 @@ exports.getTasksPage = async (req, res, next) => {
       tasks,
       pagination,
     });
-  } catch (error) {
-    console.log(error);
-    error.status = 500;
-    return next(error);
+  } catch (err) {
+    console.log(err);
+    err.status = 500;
+    return next(err);
   }
 };
 
@@ -70,8 +70,8 @@ exports.postAddTask = (req, res, next) => {
     .then(() => res.redirect("/tasks"))
     .catch((err) => {
       console.log(err);
-      error.status = 500;
-      return next(error);
+      err.status = 500;
+      return next(err);
     });
 };
 
@@ -91,8 +91,8 @@ exports.getEditTaskPage = (req, res, next) => {
     })
     .catch((err) => {
       console.log(err);
-      error.status = 500;
-      return next(error);
+      err.status = 500;
+      return next(err);
     });
 };
 
@@ -123,18 +123,28 @@ exports.postEditTask = async (req, res, next) => {
     .then(() => res.redirect("/tasks"))
     .catch((err) => {
       console.log(err);
-      error.status = 500;
-      return next(error);
+      err.status = 500;
+      return next(err);
     });
 };
 
-exports.postDeleteTask = (req, res, next) => {
-  const taskId = req.body.taskId;
+// exports.postDeleteTask = (req, res, next) => {
+//   const taskId = req.body.taskId;
+//   Task.findOneAndDelete({ _id: taskId, userId: req.user._id })
+//     .then(() => res.redirect("/tasks"))
+//     .catch((err) => {
+//       console.log(err);
+//       error.status = 500;
+//       return next(error);
+//     });
+// };
+
+exports.deleteTask = (req, res, next) => {
+  const taskId = req.params.taskId;
   Task.findOneAndDelete({ _id: taskId, userId: req.user._id })
-    .then(() => res.redirect("/tasks"))
+    .then(() => res.status(200).json({message:"task deleted successfully"}))
     .catch((err) => {
       console.log(err);
-      error.status = 500;
-      return next(error);
+      return res.status(500).json({ message: "an error occurred" });
     });
 };

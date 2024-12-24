@@ -8,6 +8,9 @@ const { invalidCsrfTokenError, generateToken, doubleCsrfProtection } =
     cookieName: CSRF_COOKIE_NAME,
     cookieOptions: { sameSite: false, secure: false },
     getTokenFromRequest: (req) => {
+      if (req.method === "DELETE") {
+        return req.headers["x-csrf-token"];
+      }
       return req.body._csrf;
     },
   });
