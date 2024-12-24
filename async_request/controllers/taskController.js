@@ -142,9 +142,15 @@ exports.postEditTask = async (req, res, next) => {
 exports.deleteTask = (req, res, next) => {
   const taskId = req.params.taskId;
   Task.findOneAndDelete({ _id: taskId, userId: req.user._id })
-    .then(() => res.status(200).json({message:"task deleted successfully"}))
+    .then(() =>
+      res
+        .status(200)
+        .json({ message: "task deleted successfully", status: 200 })
+    )
     .catch((err) => {
       console.log(err);
-      return res.status(500).json({ message: "an error occurred" });
+      return res
+        .status(500)
+        .json({ message: "an error occurred", status: 500 });
     });
 };
