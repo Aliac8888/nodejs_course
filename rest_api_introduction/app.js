@@ -5,6 +5,8 @@ const port = 8080;
 
 const postRoutes = require("./routes/posts");
 
+app.use(express.json())
+
 app.use("/posts", postRoutes);
 
 app.listen(port, () => {
