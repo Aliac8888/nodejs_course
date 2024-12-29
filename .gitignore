@@ -1,3 +1,4 @@
 **/node_modules/
+**/.env
 **/public/uploads/
 express_js_basics/title.txt
