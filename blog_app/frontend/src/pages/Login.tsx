@@ -21,26 +21,28 @@ const Login = () => {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
-      <h1>Login</h1>
-      <input
-        className={styles.input}
-        type="email"
-        name="email"
-        placeholder="Email"
-        onChange={handleChange}
-      />
-      <input
-        className={styles.input}
-        type="password"
-        name="password"
-        placeholder="Password"
-        onChange={handleChange}
-      />
-      <button className={styles.button} type="submit">
-        Login
-      </button>
-    </form>
+    <div className={styles["form-container"]}>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Login</h1>
+        <input
+          className={styles.input}
+          type="email"
+          name="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+        <input
+          className={styles.input}
+          type="password"
+          name="password"
+          placeholder="Password"
+          onChange={handleChange}
+        />
+        <button className={styles.button} type="submit">
+          Login
+        </button>
+      </form>
+    </div>
   );
 };
 
