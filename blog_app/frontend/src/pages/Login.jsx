@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import styles from "../assets/styles/Auth.module.css";
-import axios, { Axios } from "axios";
+import axios from "axios";
 
-const Register = () => {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/signup", formData);
-      alert(res.data.message);
+      const res = await axios.post("/api/auth/login", formData);
+      localStorage.setItem("token", res.data.token);
+      alert("Logged in successfully!");
     } catch (error) {
       alert(error.response.data.error);
     }
@@ -26,14 +23,7 @@ const Register = () => {
   return (
     <div className={styles["form-container"]}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Register</h1>
-        <input
-          className={styles.input}
-          type="text"
-          name="username"
-          placeholder="Username"
-          onChange={handleChange}
-        />
+        <h1 className={styles.title}>Login</h1>
         <input
           className={styles.input}
           type="email"
@@ -49,11 +39,11 @@ const Register = () => {
           onChange={handleChange}
         />
         <button className={styles.button} type="submit">
-          Register
+          Login
         </button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default Login;
