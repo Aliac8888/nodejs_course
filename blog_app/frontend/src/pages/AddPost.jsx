@@ -1,19 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../assets/styles/EditPost.module.css";
+import { createPost } from "../api/postApi";
 
 const AddPost = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ title: "", content: "" });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("New Post Data:", formData);
-    navigate("/posts");
+    setError(null);
+    try {
+      await createPost(formData);
+      navigate("/posts");
+    } catch (error) {
+      setError("failed to create post");
+    }
   };
 
   return (
@@ -39,6 +46,7 @@ const AddPost = () => {
           Add Post
         </button>
       </form>
+      {error && <p>{error}</p>}
     </div>
   );
 };
