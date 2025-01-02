@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Post from "../components/Post";
 import styles from "../assets/styles/Posts.module.css";
+import { fetchPosts } from "../api/postApi";
 
 const Posts = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Mock fetching data
-    const fetchPosts = async () => {
-      const mockPosts = [
-        { id: 1, title: "First Post", content: "This is the first post." },
-        { id: 2, title: "Second Post", content: "This is the second post." },
-      ];
-      setPosts(mockPosts);
+    const getPosts = async () => {
+      try {
+        const data = await fetchPosts();
+        setPosts(data);
+      } catch (error) {
+        console.log("error:" + error);
+      }
     };
-
-    fetchPosts();
+    getPosts();
   }, []);
 
   const deletePost = (id) => {
