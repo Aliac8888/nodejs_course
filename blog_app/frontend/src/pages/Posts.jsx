@@ -21,7 +21,7 @@ const Posts = () => {
   }, []);
 
   const deletePost = (id) => {
-    setPosts(posts.filter((post) => post.id !== id));
+    setPosts(posts.filter((post) => post._id !== id));
   };
 
   return (
@@ -36,7 +36,7 @@ const Posts = () => {
       {posts.length > 0 ? (
         <div className={styles["post-list"]}>
           {posts.map((post) => (
-            <Post key={post.id} post={post} onDelete={deletePost} />
+            <Post key={post._id} post={post} onDelete={deletePost} />
           ))}
         </div>
       ) : (

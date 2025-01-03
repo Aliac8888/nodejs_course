@@ -13,13 +13,13 @@ const Post = ({ post, onDelete }) => {
       <div className={styles.buttons}>
         <button
           className={styles.button}
-          onClick={() => navigate(`/edit-post/${post.id}`)}
+          onClick={() => navigate(`/edit-post/${post._id}`)}
         >
           Edit
         </button>
         <button
           className={`${styles.button} ${styles.delete}`}
-          onClick={() => onDelete(post.id)}
+          onClick={() => onDelete(post._id)}
         >
           Delete
         </button>
@@ -30,7 +30,7 @@ const Post = ({ post, onDelete }) => {
 
 Post.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    _id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
   }).isRequired,

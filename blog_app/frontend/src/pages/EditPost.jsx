@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "../assets/styles/EditPost.module.css";
+import { fetchSinglePost, updatePost } from "../api/postApi";
 
 const EditPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ title: "", content: "" });
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Mock fetching post data by ID
     const fetchPost = async () => {
-      const mockPost = {
-        id,
-        title: `Post ${id}`,
-        content: `Content of post ${id}`,
-      };
-      setFormData(mockPost);
+      try {
+        const post = await fetchSinglePost(id);
+        if (post) {
+          setFormData(post);
+        } else {
+          setError("post not found");
+        }
+      } catch (error) {
+        setError("error fetching post");
+      }
     };
 
     fetchPost();
@@ -25,10 +30,14 @@ const EditPost = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Edited Post Data:", formData);
-    navigate("/posts");
+    try {
+      await updatePost(id,formData);
+      navigate("/posts");
+    } catch (error) {
+      setError("failed to update the post")
+    }
   };
 
   return (
@@ -54,6 +63,7 @@ const EditPost = () => {
           Save
         </button>
       </form>
+      {error && <p>{error}</p>}
     </div>
   );
 };

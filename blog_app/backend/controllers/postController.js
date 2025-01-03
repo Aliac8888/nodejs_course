@@ -9,6 +9,19 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
+exports.getSinglePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ error: `post not found: ${id}` });
+    }
+    res.status(200).json(post);
+  } catch (error) {
+    res.status(500).json({ error: `failed to fetch post with id: ${id}` });
+  }
+};
+
 exports.createPost = async (req, res) => {
   const { title, content } = req.body;
 
@@ -24,5 +37,29 @@ exports.createPost = async (req, res) => {
       .json({ message: "Post created successfully", post: newPost });
   } catch (error) {
     res.status(500).json({ error: "failed to create post" });
+  }
+};
+
+exports.updatePost = async (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
+
+  if (!title || !content) {
+    return res.status(400).json({ error: "content and title are required" });
+  }
+
+  try {
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ error: `post not found: ${id}` });
+    }
+    post.title = title;
+    post.content = content;
+    await post.save();
+    res
+      .status(200)
+      .json({ message: "Post updated successfully", post });
+  } catch (error) {
+    res.status(500).json({ error: "failed to update post" });
   }
 };
