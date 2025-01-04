@@ -56,10 +56,25 @@ exports.updatePost = async (req, res) => {
     post.title = title;
     post.content = content;
     await post.save();
-    res
-      .status(200)
-      .json({ message: "Post updated successfully", post });
+    res.status(200).json({ message: "Post updated successfully", post });
   } catch (error) {
     res.status(500).json({ error: "failed to update post" });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+  return res.status(500).json({ error: "failed to delete post" });
+
+  try {
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ error: `post not found: ${id}` });
+    }
+
+    await post.deleteOne();
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "failed to delete post" });
   }
 };

@@ -50,3 +50,14 @@ export const updatePost = async (id,postData) => {
     throw error;
   }
 };
+
+// delete post
+export const deletePost = async (id) => {
+  try {
+    const response = await api.delete("/delete/" + id);
+    return response.data;
+  } catch (error) {
+    console.log("error while deleting post:" + error);
+    throw error;
+  }
+};

@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Post from "../components/Post";
 import styles from "../assets/styles/Posts.module.css";
-import { fetchPosts } from "../api/postApi";
+import { fetchPosts,deletePost } from "../api/postApi";
 
 const Posts = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -20,8 +21,14 @@ const Posts = () => {
     getPosts();
   }, []);
 
-  const deletePost = (id) => {
-    setPosts(posts.filter((post) => post._id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await deletePost(id);
+      setPosts(posts.filter((post) => post._id !== id));
+    } catch (error) {
+      console.log("error while deleting post:" + error);
+      setError("failed to delete post")
+    }
   };
 
   return (
@@ -36,7 +43,7 @@ const Posts = () => {
       {posts.length > 0 ? (
         <div className={styles["post-list"]}>
           {posts.map((post) => (
-            <Post key={post._id} post={post} onDelete={deletePost} />
+            <Post key={post._id} post={post} onDelete={handleDelete} />
           ))}
         </div>
       ) : (
@@ -44,6 +51,7 @@ const Posts = () => {
           No posts available. Add a new post!
         </p>
       )}
+      {error && <p>{error}</p>}
     </div>
   );
 };
