@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import styles from "../assets/styles/Auth.module.css";
-import axios, { Axios } from "axios";
+import { useNavigate } from "react-router-dom";
+import { register } from "../api/authApi";
 
 const Register = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -16,10 +19,10 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/signup", formData);
-      alert(res.data.message);
+      await register(formData);
+      navigate("/login");
     } catch (error) {
-      alert(error.response.data.error);
+      setError("signup failed");
     }
   };
 
@@ -51,6 +54,7 @@ const Register = () => {
         <button className={styles.button} type="submit">
           Register
         </button>
+        {error && <p>{error}</p>}
       </form>
     </div>
   );

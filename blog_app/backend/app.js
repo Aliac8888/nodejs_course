@@ -2,7 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+
 const postRoutes = require("./routes/postRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,5 +19,7 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use("/api/posts", postRoutes);
+
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
