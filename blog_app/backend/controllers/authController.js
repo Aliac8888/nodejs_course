@@ -12,6 +12,7 @@ exports.signup = async (req, res) => {
       email,
       password: hashedPass,
     });
+    user.save();
     res.status(201).json({
       message: "User registered successfully",
       user: { username, email },
@@ -38,8 +39,10 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    res.status(200).json({ token, userId: id });
+    res.status(200).json({ token, userId: user._id.toString() });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({ error: "login failed" });
   }
 };

@@ -2,7 +2,7 @@ const Post = require("../models/post");
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await Post.find({userId:req.userId});
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: "failed to fetch posts" });
@@ -12,7 +12,7 @@ exports.getAllPosts = async (req, res) => {
 exports.getSinglePost = async (req, res) => {
   const { id } = req.params;
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ _id: id, userId: req.userId });
     if (!post) {
       return res.status(404).json({ error: `post not found: ${id}` });
     }
@@ -30,7 +30,7 @@ exports.createPost = async (req, res) => {
   }
 
   try {
-    const newPost = new Post({ title, content });
+    const newPost = new Post({ title, content, userId: req.userId });
     await newPost.save();
     res
       .status(201)
@@ -49,7 +49,7 @@ exports.updatePost = async (req, res) => {
   }
 
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ _id: id, userId: req.userId });
     if (!post) {
       return res.status(404).json({ error: `post not found: ${id}` });
     }
@@ -64,10 +64,9 @@ exports.updatePost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   const { id } = req.params;
-  return res.status(500).json({ error: "failed to delete post" });
 
   try {
-    const post = await Post.findById(id);
+    const post = await Post.findOne({ _id: id, userId: req.userId });
     if (!post) {
       return res.status(404).json({ error: `post not found: ${id}` });
     }

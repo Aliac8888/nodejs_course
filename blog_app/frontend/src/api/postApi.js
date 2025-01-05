@@ -7,10 +7,18 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // fetch all posts
 export const fetchPosts = async () => {
   try {
-    const response = await api.get("/");    
+    const response = await api.get("/");
     return response.data;
   } catch (error) {
     console.log("error while fetching posts:" + error);
@@ -41,7 +49,7 @@ export const createPost = async (postData) => {
 };
 
 // update post
-export const updatePost = async (id,postData) => {
+export const updatePost = async (id, postData) => {
   try {
     const response = await api.put("/" + id, postData);
     return response.data;

@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styles from "../assets/styles/Auth.module.css";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { login } from "../api/authApi";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -12,11 +15,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/login", formData);
-      localStorage.setItem("token", res.data.token);
-      alert("Logged in successfully!");
+      await login(formData);
+      navigate("/posts");
     } catch (error) {
-      alert(error.response.data.error);
+      setError("login failed");
     }
   };
 
@@ -41,6 +43,7 @@ const Login = () => {
         <button className={styles.button} type="submit">
           Login
         </button>
+        {error && <p>{error}</p>}
       </form>
     </div>
   );
