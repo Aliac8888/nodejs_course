@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const postRoutes = require("./routes/postRoutes");
 const authRoutes = require("./routes/authRoutes");
+const authMiddleware = require("./middlewares/auth");
 
 const PORT = process.env.PORT || 3000;
 
@@ -18,7 +19,7 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
-app.use("/api/posts", postRoutes);
+app.use("/api/posts", authMiddleware.authenticate, postRoutes);
 
 app.use("/api/auth", authRoutes);
 
