@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Post from "../components/Post";
 import styles from "../assets/styles/Posts.module.css";
-import { fetchPosts,deletePost } from "../api/postApi";
+import { fetchPosts, deletePost } from "../api/postApi";
+import socket from "../utilities/socket";
 
 const Posts = () => {
   const navigate = useNavigate();
@@ -19,6 +20,16 @@ const Posts = () => {
       }
     };
     getPosts();
+
+    socket.on("newPost", (post) => {
+      setPosts((prevPosts) => {        
+        return [...prevPosts, post];
+      });
+    });
+
+    return () => {
+      socket.off("newPost");
+    };
   }, []);
 
   const handleDelete = async (id) => {
@@ -27,7 +38,7 @@ const Posts = () => {
       setPosts(posts.filter((post) => post._id !== id));
     } catch (error) {
       console.log("error while deleting post:" + error);
-      setError("failed to delete post")
+      setError("failed to delete post");
     }
   };
 

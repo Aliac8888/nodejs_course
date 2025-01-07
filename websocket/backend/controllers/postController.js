@@ -2,7 +2,7 @@ const Post = require("../models/post");
 
 exports.getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find({userId:req.userId});
+    const posts = await Post.find();
     res.status(200).json(posts);
   } catch (error) {
     res.status(500).json({ error: "failed to fetch posts" });
@@ -32,6 +32,14 @@ exports.createPost = async (req, res) => {
   try {
     const newPost = new Post({ title, content, userId: req.userId });
     await newPost.save();
+
+    const io = req.app.get("io");
+    io.emit("newPost", {
+      _id: newPost._id,
+      content: newPost.content,
+      title: newPost.title,
+      userId: newPost.userId,
+    });
     res
       .status(201)
       .json({ message: "Post created successfully", post: newPost });
